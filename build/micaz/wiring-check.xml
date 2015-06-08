@@ -1,0 +1,955 @@
+<nesc xmlns="http://www.tinyos.net/nesC">
+  <wiring>
+    <wire loc="54:/home/luis/local/tinyos-2.1.1/tos/system/TinySchedulerC.nc">
+      <from><interface-ref name="TaskBasic" scoped="" ref="0x2b75809cc728"/></from>
+      <to><interface-ref name="TaskBasic" scoped="" ref="0x2b7580a87b08"/></to>
+    </wire>
+    <wire loc="53:/home/luis/local/tinyos-2.1.1/tos/system/TinySchedulerC.nc">
+      <from><interface-ref name="Scheduler" scoped="" ref="0x2b75809cbbe8"/></from>
+      <to><interface-ref name="Scheduler" scoped="" ref="0x2b7580a88c00"/></to>
+    </wire>
+    <wire loc="55:/home/luis/local/tinyos-2.1.1/tos/system/TinySchedulerC.nc">
+      <from><interface-ref name="McuSleep" scoped="" ref="0x2b7580a84020"/></from>
+      <to><interface-ref name="McuSleep" scoped="" ref="0x2b75809d5dd8"/></to>
+    </wire>
+  </wiring>
+  <components>
+    <component qname="Node" loc="14:/home/luis/workspace/Project0/src/Node.nc">
+      <module/>
+    </component>
+    <component qname="TinySchedulerC" loc="46:/home/luis/local/tinyos-2.1.1/tos/system/TinySchedulerC.nc">
+      <documentation loc="34:/home/luis/local/tinyos-2.1.1/tos/system/TinySchedulerC.nc">
+        <short>&#10; The TinyOS scheduler.</short>
+        <long>&#10; The TinyOS scheduler. It provides two interfaces: Scheduler,&#10; for TinyOS to initialize and run tasks, and TaskBasic, the simplext&#10; class of TinyOS tasks (reserved always at-most-once posting,&#10; FIFO, parameter-free). For details and information on how to&#10; replace the scheduler, refer to TEP 106.&#10;&#10; @author  Phil Levis&#10; @date    August 7 2005&#10; @see     TEP 106: Tasks and Schedulers&#10;</long>
+      </documentation>
+      <configuration/>
+    </component>
+    <component qname="SchedulerBasicP" loc="54:/home/luis/local/tinyos-2.1.1/tos/system/SchedulerBasicP.nc" safe="">
+      <module/>
+    </component>
+    <component qname="McuSleepC" loc="48:/home/luis/local/tinyos-2.1.1/tos/chips/atm128/McuSleepC.nc" safe="">
+      <documentation loc="34:/home/luis/local/tinyos-2.1.1/tos/chips/atm128/McuSleepC.nc">
+        <short>&#10; Implementation of TEP 112 (Microcontroller Power Management) for&#10; the Atmega128.</short>
+        <long>&#10; Implementation of TEP 112 (Microcontroller Power Management) for&#10; the Atmega128. Power state calculation code copied from Rob&#10; Szewczyk's 1.x code in HPLPowerManagementM.nc.&#10;&#10; &#60;pre>&#10;  $Id: McuSleepC.nc,v 1.11 2010-06-29 22:07:43 scipio Exp $&#10; &#60;/pre>&#10;&#10; @author Philip Levis&#10; @author Robert Szewczyk&#10; @date   October 26, 2005&#10;</long>
+      </documentation>
+      <module/>
+    </component>
+  </components>
+  <interfaces>
+    <interface provided="0" name="Timer0" ref="0x2b7580adc578" loc="20:/home/luis/workspace/Project0/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Timer0" scoped="" ref="0x2b7580adc578"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Timer"/>
+        <arguments>
+          <type-tag size="I:2" alignment="I:1"><struct-ref ref="0x2b7580a4a608"/>
+            <typename><typedef-ref name="TMilli" ref="0x2b7580a4a960"/></typename>
+          </type-tag>
+        </arguments>
+      </instance>
+      <interface-functions>
+        <function-ref name="getNow" scoped="" ref="0x2b7580ada8f0"/>
+        <function-ref name="fired" scoped="" ref="0x2b7580adb020"/>
+        <function-ref name="startPeriodicAt" scoped="" ref="0x2b7580adbd10"/>
+        <function-ref name="isOneShot" scoped="" ref="0x2b7580adb8c0"/>
+        <function-ref name="getdt" scoped="" ref="0x2b7580ad91c0"/>
+        <function-ref name="gett0" scoped="" ref="0x2b7580adad40"/>
+        <function-ref name="isRunning" scoped="" ref="0x2b7580adb470"/>
+        <function-ref name="startPeriodic" scoped="" ref="0x2b7580acd0f8"/>
+        <function-ref name="startOneShotAt" scoped="" ref="0x2b7580ada320"/>
+        <function-ref name="startOneShot" scoped="" ref="0x2b7580acd598"/>
+        <function-ref name="stop" scoped="" ref="0x2b7580acda38"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="AMControl" ref="0x2b7580ae1870" loc="26:/home/luis/workspace/Project0/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="AMControl" scoped="" ref="0x2b7580ae1870"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="SplitControl"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="startDone" scoped="" ref="0x2b7580ae1bc0"/>
+        <function-ref name="stopDone" scoped="" ref="0x2b7580ae1d48"/>
+        <function-ref name="start" scoped="" ref="0x2b7580ad8020"/>
+        <function-ref name="stop" scoped="" ref="0x2b7580ad81a8"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="Boot" ref="0x2b7580aca3e0" loc="19:/home/luis/workspace/Project0/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Boot" scoped="" ref="0x2b7580aca3e0"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Boot"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="booted" scoped="" ref="0x2b7580aca730"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="Receive" ref="0x2b7580ad7020" loc="28:/home/luis/workspace/Project0/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Receive" scoped="" ref="0x2b7580ad7020"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Receive"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="receive" scoped="" ref="0x2b7580ad7370"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="Flooding" ref="0x2b7580b38b30" loc="30:/home/luis/workspace/Project0/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Flooding" scoped="" ref="0x2b7580b38b30"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Flooding"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="receive" scoped="" ref="0x2b7580b38e80"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="Sender" ref="0x2b7580adf680" loc="27:/home/luis/workspace/Project0/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Sender" scoped="" ref="0x2b7580adf680"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="SimpleSend"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="send" scoped="" ref="0x2b7580adf9d0"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="CommandHandler" ref="0x2b7580b3a950" loc="29:/home/luis/workspace/Project0/src/Node.nc">
+      <component-ref qname="Node"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="CommandHandler" scoped="" ref="0x2b7580b3a950"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="CommandHandler"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="receive" scoped="" ref="0x2b7580b3aca0"/>
+        <function-ref name="printLinkState" scoped="" ref="0x2b7580b3ae28"/>
+        <function-ref name="printNeighbors" scoped="" ref="0x2b7580ae0020"/>
+        <function-ref name="printDistanceVector" scoped="" ref="0x2b7580ae01a8"/>
+        <function-ref name="setTestClient" scoped="" ref="0x2b7580ae0330"/>
+        <function-ref name="setTestServer" scoped="" ref="0x2b7580ae04b8"/>
+        <function-ref name="setAppServer" scoped="" ref="0x2b7580ae0640"/>
+        <function-ref name="printRouteTable" scoped="" ref="0x2b7580ae07c8"/>
+        <function-ref name="ping" scoped="" ref="0x2b7580ae0950"/>
+        <function-ref name="setAppClient" scoped="" ref="0x2b7580ae0ad8"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="TaskBasic" ref="0x2b75809cc728" loc="48:/home/luis/local/tinyos-2.1.1/tos/system/TinySchedulerC.nc">
+      <component-ref qname="TinySchedulerC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="TaskBasic" scoped="" ref="0x2b75809cc728"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="TaskBasic"/>
+      </instance>
+      <interface-parameters>
+        <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+          <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+        </type-int>
+      </interface-parameters>
+      <interface-functions>
+        <function-ref name="postTask" scoped="" ref="0x2b75809cca78"/>
+        <function-ref name="runTask" scoped="" ref="0x2b75809ccc00"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="Scheduler" ref="0x2b75809cbbe8" loc="47:/home/luis/local/tinyos-2.1.1/tos/system/TinySchedulerC.nc">
+      <component-ref qname="TinySchedulerC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Scheduler" scoped="" ref="0x2b75809cbbe8"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Scheduler"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0x2b75809c3020"/>
+        <function-ref name="taskLoop" scoped="" ref="0x2b75809c31a8"/>
+        <function-ref name="runNextTask" scoped="" ref="0x2b75809c3330"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="TaskBasic" ref="0x2b7580a87b08" loc="56:/home/luis/local/tinyos-2.1.1/tos/system/SchedulerBasicP.nc">
+      <component-ref qname="SchedulerBasicP"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="TaskBasic" scoped="" ref="0x2b7580a87b08"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="TaskBasic"/>
+      </instance>
+      <interface-parameters>
+        <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+          <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+        </type-int>
+      </interface-parameters>
+      <interface-functions>
+        <function-ref name="postTask" scoped="" ref="0x2b7580a87e58"/>
+        <function-ref name="runTask" scoped="" ref="0x2b7580a85020"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="McuSleep" ref="0x2b7580a84020" loc="57:/home/luis/local/tinyos-2.1.1/tos/system/SchedulerBasicP.nc">
+      <component-ref qname="SchedulerBasicP"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="McuSleep" scoped="" ref="0x2b7580a84020"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="McuSleep"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="sleep" scoped="" ref="0x2b7580a84370"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="Scheduler" ref="0x2b7580a88c00" loc="55:/home/luis/local/tinyos-2.1.1/tos/system/SchedulerBasicP.nc">
+      <component-ref qname="SchedulerBasicP"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="Scheduler" scoped="" ref="0x2b7580a88c00"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="Scheduler"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="init" scoped="" ref="0x2b7580a87020"/>
+        <function-ref name="taskLoop" scoped="" ref="0x2b7580a871a8"/>
+        <function-ref name="runNextTask" scoped="" ref="0x2b7580a87330"/>
+      </interface-functions>
+    </interface>
+    <interface provided="0" name="McuPowerOverride" ref="0x2b7580aa87f0" loc="54:/home/luis/local/tinyos-2.1.1/tos/chips/atm128/McuSleepC.nc">
+      <component-ref qname="McuSleepC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="McuPowerOverride" scoped="" ref="0x2b7580aa87f0"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="McuPowerOverride"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="lowestState" scoped="" ref="0x2b7580aa8b40"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="McuSleep" ref="0x2b75809d5dd8" loc="50:/home/luis/local/tinyos-2.1.1/tos/chips/atm128/McuSleepC.nc">
+      <component-ref qname="McuSleepC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="McuSleep" scoped="" ref="0x2b75809d5dd8"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="McuSleep"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="sleep" scoped="" ref="0x2b7580a9e170"/>
+      </interface-functions>
+    </interface>
+    <interface provided="1" name="McuPowerState" ref="0x2b7580aa9240" loc="51:/home/luis/local/tinyos-2.1.1/tos/chips/atm128/McuSleepC.nc">
+      <component-ref qname="McuSleepC"/>
+      <type-interface size="I:2" alignment="I:1"><interface-ref name="McuPowerState" scoped="" ref="0x2b7580aa9240"/></type-interface>
+      <instance>
+        <interfacedef-ref qname="McuPowerState"/>
+      </instance>
+      <interface-functions>
+        <function-ref name="update" scoped="" ref="0x2b7580aa9590"/>
+      </interface-functions>
+    </interface>
+  </interfaces>
+  <interfacedefs>
+    <interfacedef qname="Timer" loc="53:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+      <documentation loc="36:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <short>&#10; A Timer is TinyOS's general purpose timing interface.</short>
+        <long>&#10; A Timer is TinyOS's general purpose timing interface. For more precise&#10; timing, you may wish to use a (platform-specific) component offering&#10; an Alarm interface.&#10;&#10; &#60;p>A Timer is parameterised by its &#34;precision&#34; (milliseconds,&#10; microseconds, etc), identified by a type. This prevents, e.g.,&#10; unintentionally mixing components expecting milliseconds with those&#10; expecting microseconds as those interfaces have a different type.&#10;&#10; &#60;p>See TEP102 for more details.&#10;&#10; @param precision_tag A type indicating the precision of this Alarm.&#10;&#10; @author Cory Sharp &#60;cssharp@eecs.berkeley.edu>&#10;</long>
+      </documentation>
+      <parameters>
+        <typedef name="precision_tag" ref="0x2b7580ac9338" loc="53:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <interfacedef-ref qname="Timer"/>
+          <type-var size="U:" alignment="U:"><typedef-ref name="precision_tag" scoped="" ref="0x2b7580ac9338"/></type-var>
+        </typedef>
+      </parameters>
+      <function command="" provided="0" name="getNow" ref="0x2b7580acf020" loc="136:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="132:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Return the current time.</short>
+          <long>&#10; Return the current time.&#10; @return Current time.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+            <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="fired" ref="0x2b7580ad4710" loc="83:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="80:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Signaled when the timer expires (one-shot) or repeats (periodic).</short>
+          <long>&#10; Signaled when the timer expires (one-shot) or repeats (periodic).&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="startPeriodicAt" ref="0x2b7580ad25b8" loc="114:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="100:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Set a periodic timer to repeat every dt time units.</short>
+          <long>&#10; Set a periodic timer to repeat every dt time units. Replaces any&#10; current timer settings. The &#60;code>fired&#60;/code> will be signaled every&#10; dt units (first event at t0+dt units). Periodic timers set in the past&#10; will get a bunch of events in succession, until the timer &#34;catches up&#34;.&#10;&#10; &#60;p>Because the current time may wrap around, it is possible to use&#10; values of t0 greater than the &#60;code>getNow&#60;/code>'s result. These&#10; values represent times in the past, i.e., the time at which getNow()&#10; would last of returned that value.&#10;&#10; @param t0 Base time for timer.&#10; @param dt Time until the timer fires.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="t0" ref="0x2b7580ad2020" loc="114:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </variable>
+          <variable name="dt" ref="0x2b7580ad2338" loc="114:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="isOneShot" ref="0x2b7580ad37b8" loc="98:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="94:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Check if this is a one-shot timer.</short>
+          <long>&#10; Check if this is a one-shot timer.&#10; @return TRUE for one-shot timers, FALSE for periodic timers.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="bool" ref="0x2b75809bd9b8"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="getdt" ref="0x2b7580adc020" loc="151:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="146:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Return the delay or period for the previously started timer.</short>
+          <long>&#10; Return the delay or period for the previously started timer. The next&#10; fired event will occur at gett0() + getdt().&#10; @return Timer's interval.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+            <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="gett0" ref="0x2b7580acf740" loc="144:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="138:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Return the time anchor for the previously started timer or the time of&#10; the previous event for periodic timers.</short>
+          <long>&#10; Return the time anchor for the previously started timer or the time of&#10; the previous event for periodic timers. The next fired event will occur&#10; at gett0() + getdt().&#10; @return Timer's base time.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+            <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="isRunning" ref="0x2b7580ad3020" loc="92:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="86:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Check if timer is running.</short>
+          <long>&#10; Check if timer is running. Periodic timers run until stopped or&#10; replaced, one-shot timers run until their deadline expires.&#10;&#10; @return TRUE if the timer is still running.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="bool" ref="0x2b75809bd9b8"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="startPeriodic" ref="0x2b7580ac9e08" loc="64:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="56:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Set a periodic timer to repeat every dt time units.</short>
+          <long>&#10; Set a periodic timer to repeat every dt time units. Replaces any&#10; current timer settings. Equivalent to startPeriodicAt(getNow(),&#10; dt). The &#60;code>fired&#60;/code> will be signaled every dt units (first&#10; event in dt units).&#10;&#10; @param dt Time until the timer fires.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="dt" ref="0x2b7580ac9b98" loc="64:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="startOneShotAt" ref="0x2b7580ad05b8" loc="129:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="116:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Set a single-short timer to time t0+dt.</short>
+          <long>&#10; Set a single-short timer to time t0+dt. Replaces any current timer&#10; settings. The &#60;code>fired&#60;/code> will be signaled when the timer&#10; expires. Timers set in the past will fire &#34;soon&#34;.&#10;&#10; &#60;p>Because the current time may wrap around, it is possible to use&#10; values of t0 greater than the &#60;code>getNow&#60;/code>'s result. These&#10; values represent times in the past, i.e., the time at which getNow()&#10; would last of returned that value.&#10;&#10; @param t0 Base time for timer.&#10; @param dt Time until the timer fires.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="t0" ref="0x2b7580ad0020" loc="129:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </variable>
+          <variable name="dt" ref="0x2b7580ad0338" loc="129:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="startOneShot" ref="0x2b7580ad58a0" loc="73:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="66:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Set a single-short timer to some time units in the future.</short>
+          <long>&#10; Set a single-short timer to some time units in the future. Replaces&#10; any current timer settings. Equivalent to startOneShotAt(getNow(),&#10; dt). The &#60;code>fired&#60;/code> will be signaled when the timer expires.&#10;&#10; @param dt Time until the timer fires.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="dt" ref="0x2b7580ad5630" loc="73:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+            <type-int cname="unsigned long" unsigned="" size="I:4" alignment="I:1">
+              <typename><typedef-ref name="uint32_t" ref="0x2b75800de608"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="stop" ref="0x2b7580ad4070" loc="78:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+        <documentation loc="75:/home/luis/local/tinyos-2.1.1/tos/lib/timer/Timer.nc">
+          <short>&#10; Cancel a timer.</short>
+          <long>&#10; Cancel a timer.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Timer"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="SplitControl" loc="87:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+      <documentation loc="72:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+        <short>&#10; Please refer to TEP 115 for more information about this interface and its&#10; intended use.&#60;br>&#60;br>&#10;&#10; This is the split-phase counterpart to the StdContol interface.</short>
+        <long>&#10; Please refer to TEP 115 for more information about this interface and its&#10; intended use.&#60;br>&#60;br>&#10;&#10; This is the split-phase counterpart to the StdContol interface.  It&#10; should be used for switching between the on and off power states of&#10; the component providing it.  For each &#60;code>start()&#60;/code> or&#10; &#60;code>stop()&#60;/code> command, if the command returns SUCCESS, then a&#10; corresponding  &#60;code>startDone()&#60;/code> or &#60;code>stopDone()&#60;/code> event&#10; must be signalled.&#10;&#10; @author Joe Polastre&#10; @author Kevin Klues (klueska@cs.wustl.edu)&#10;</long>
+      </documentation>
+      <function event="" provided="0" name="startDone" ref="0x2b7580ae2020" loc="113:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+        <documentation loc="106:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+          <short> &#10; Notify caller that the component has been started and is ready to&#10; receive other commands.</short>
+          <long> &#10; Notify caller that the component has been started and is ready to&#10; receive other commands.&#10;&#10; @param &#60;b>error&#60;/b> -- SUCCESS if the component was successfully&#10;                        turned on, FAIL otherwise&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="SplitControl"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="error" ref="0x2b7580ad6c20" loc="113:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="stopDone" ref="0x2b7580ae1430" loc="138:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+        <documentation loc="132:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+          <short>&#10; Notify caller that the component has been stopped.</short>
+          <long>&#10; Notify caller that the component has been stopped.&#10;&#10; @param &#60;b>error&#60;/b> -- SUCCESS if the component was successfully&#10;                        turned off, FAIL otherwise&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="SplitControl"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="error" ref="0x2b7580ae11c0" loc="138:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="start" ref="0x2b7580ad62a8" loc="104:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+        <documentation loc="89:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+          <short>&#10; Start this component and all of its subcomponents.</short>
+          <long>&#10; Start this component and all of its subcomponents.  Return&#10; values of SUCCESS will always result in a &#60;code>startDone()&#60;/code>&#10; event being signalled.&#10;&#10; @return SUCCESS if the device is already in the process of &#10;         starting or the device was off and the device is now ready to turn &#10;         on.  After receiving this return value, you should expect a &#10;         &#60;code>startDone&#60;/code> event in the near future.&#60;br>&#10;         EBUSY if the component is in the middle of powering down&#10;               i.e. a &#60;code>stop()&#60;/code> command has been called,&#10;               and a &#60;code>stopDone()&#60;/code> event is pending&#60;br>&#10;         EALREADY if the device is already on &#60;br>&#10;         FAIL Otherwise&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="SplitControl"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="stop" ref="0x2b7580ae2808" loc="130:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+        <documentation loc="115:/home/luis/local/tinyos-2.1.1/tos/interfaces/SplitControl.nc">
+          <short>&#10; Start this component and all of its subcomponents.</short>
+          <long>&#10; Start this component and all of its subcomponents.  Return&#10; values of SUCCESS will always result in a &#60;code>startDone()&#60;/code>&#10; event being signalled.&#10;&#10; @return SUCCESS if the device is already in the process of &#10;         stopping or the device was on and the device is now ready to turn &#10;         off.  After receiving this return value, you should expect a &#10;         &#60;code>stopDone&#60;/code> event in the near future.&#60;br>&#10;         EBUSY if the component is in the middle of powering up&#10;               i.e. a &#60;code>start()&#60;/code> command has been called,&#10;               and a &#60;code>startDone()&#60;/code> event is pending&#60;br>&#10;         EALREADY if the device is already off &#60;br>&#10;         FAIL Otherwise&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="SplitControl"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="Boot" loc="50:/home/luis/local/tinyos-2.1.1/tos/interfaces/Boot.nc">
+      <documentation loc="42:/home/luis/local/tinyos-2.1.1/tos/interfaces/Boot.nc">
+        <short>&#10; Interface that notifies components when TinyOS has booted&#10; (initialized all of its components), as discussed in TEP 107.</short>
+        <long>&#10; Interface that notifies components when TinyOS has booted&#10; (initialized all of its components), as discussed in TEP 107.&#10;&#10; @author Philip Levis&#10; @date   January 5 2005&#10;</long>
+      </documentation>
+      <function event="" provided="0" name="booted" ref="0x2b7580aca020" loc="60:/home/luis/local/tinyos-2.1.1/tos/interfaces/Boot.nc">
+        <documentation loc="51:/home/luis/local/tinyos-2.1.1/tos/interfaces/Boot.nc">
+          <short>&#10; Signaled when the system has booted successfully.</short>
+          <long>&#10; Signaled when the system has booted successfully. Components can&#10; assume the system has been initialized properly. Services may&#10; need to be started to work, however.&#10;&#10; @see StdControl&#10; @see SplitConrol&#10; @see TEP 107: Boot Sequence&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Boot"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="Receive" loc="56:/home/luis/local/tinyos-2.1.1/tos/interfaces/Receive.nc">
+      <function event="" provided="0" name="receive" ref="0x2b7580b33920" loc="78:/home/luis/local/tinyos-2.1.1/tos/interfaces/Receive.nc">
+        <documentation loc="58:/home/luis/local/tinyos-2.1.1/tos/interfaces/Receive.nc">
+          <short>&#10; Receive a packet buffer, returning a buffer for the signaling&#10; component to use for the next reception.</short>
+          <long>&#10; Receive a packet buffer, returning a buffer for the signaling&#10; component to use for the next reception. The return value&#10; can be the same as &#60;tt>msg&#60;/tt>, as long as the handling&#10; component copies out the data it needs.&#10;&#10; &#60;b>Note&#60;/b> that misuse of this interface is one of the most&#10; common bugs in TinyOS code. For example, if a component both calls a&#10; send on the passed message and returns it, then it is possible&#10; the buffer will be reused before the send occurs, overwriting&#10; the component's data. This would cause the mote to possibly&#10; instead send a packet it most recently received.&#10;&#10; @param  'message_t* ONE msg'        the receied packet&#10; @param  'void* COUNT(len) payload'  a pointer to the packet's payload&#10; @param  len      the length of the data region pointed to by payload&#10; @return 'message_t* ONE'              a packet buffer for the stack to use for the next&#10;                  received packet.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Receive"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-pointer size="I:2" alignment="I:1">
+            <type-tag size="I:52" alignment="I:1"><nx_struct-ref name="message_t" ref="0x2b7580b26150"/>
+              <typename><typedef-ref name="message_t" ref="0x2b7580b356c0"/></typename>
+            </type-tag>
+          </type-pointer>
+          <function-parameters>
+            <type-pointer size="I:2" alignment="I:1">
+              <type-tag size="I:52" alignment="I:1"><nx_struct-ref name="message_t" ref="0x2b7580b26150"/>
+                <typename><typedef-ref name="message_t" ref="0x2b7580b356c0"/></typename>
+              </type-tag>
+            </type-pointer>
+            <type-pointer size="I:2" alignment="I:1">
+              <type-void size="I:1" alignment="I:1"></type-void>
+            </type-pointer>
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="msg" ref="0x2b7580b33020" loc="78:/home/luis/local/tinyos-2.1.1/tos/interfaces/Receive.nc">
+            <type-pointer size="I:2" alignment="I:1">
+              <type-tag size="I:52" alignment="I:1"><nx_struct-ref name="message_t" ref="0x2b7580b26150"/>
+                <typename><typedef-ref name="message_t" ref="0x2b7580b356c0"/></typename>
+              </type-tag>
+            </type-pointer>
+          </variable>
+          <variable name="payload" ref="0x2b7580b33348" loc="78:/home/luis/local/tinyos-2.1.1/tos/interfaces/Receive.nc">
+            <type-pointer size="I:2" alignment="I:1">
+              <type-void size="I:1" alignment="I:1"></type-void>
+            </type-pointer>
+          </variable>
+          <variable name="len" ref="0x2b7580b33658" loc="78:/home/luis/local/tinyos-2.1.1/tos/interfaces/Receive.nc">
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="Flooding" loc="3:/home/luis/workspace/Project0/src/lib/interfaces/Flooding.nc">
+      <function command="" provided="0" name="receive" ref="0x2b7580b38898" loc="5:/home/luis/workspace/Project0/src/lib/interfaces/Flooding.nc">
+        <interfacedef-ref qname="Flooding"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+          </type-int>
+          <function-parameters>
+            <type-pointer size="I:2" alignment="I:1">
+              <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x2b7580ac5358"/>
+                <typename><typedef-ref name="pack" ref="0x2b7580ac4778"/></typename>
+              </type-tag>
+            </type-pointer>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="msg" ref="0x2b7580b38628" loc="5:/home/luis/workspace/Project0/src/lib/interfaces/Flooding.nc">
+            <type-pointer size="I:2" alignment="I:1">
+              <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x2b7580ac5358"/>
+                <typename><typedef-ref name="pack" ref="0x2b7580ac4778"/></typename>
+              </type-tag>
+            </type-pointer>
+          </variable>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="SimpleSend" loc="3:/home/luis/workspace/Project0/src/lib/interfaces/SimpleSend.nc">
+      <function command="" provided="0" name="send" ref="0x2b7580adf348" loc="4:/home/luis/workspace/Project0/src/lib/interfaces/SimpleSend.nc">
+        <interfacedef-ref qname="SimpleSend"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+          </type-int>
+          <function-parameters>
+            <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x2b7580ac5358"/>
+              <typename><typedef-ref name="pack" ref="0x2b7580ac4778"/></typename>
+            </type-tag>
+            <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:1">
+              <typename><typedef-ref name="uint16_t" ref="0x2b75800ddb98"/></typename>
+            </type-int>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="msg" ref="0x2b7580ad8d68" loc="4:/home/luis/workspace/Project0/src/lib/interfaces/SimpleSend.nc">
+            <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x2b7580ac5358"/>
+              <typename><typedef-ref name="pack" ref="0x2b7580ac4778"/></typename>
+            </type-tag>
+          </variable>
+          <variable name="dest" ref="0x2b7580adf0c8" loc="4:/home/luis/workspace/Project0/src/lib/interfaces/SimpleSend.nc">
+            <type-int cname="unsigned short" unsigned="" size="I:2" alignment="I:1">
+              <typename><typedef-ref name="uint16_t" ref="0x2b75800ddb98"/></typename>
+            </type-int>
+          </variable>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="CommandHandler" loc="3:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+      <function command="" provided="0" name="receive" ref="0x2b7580b2f290" loc="4:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+          </type-int>
+          <function-parameters>
+            <type-pointer size="I:2" alignment="I:1">
+              <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x2b7580ac5358"/>
+                <typename><typedef-ref name="pack" ref="0x2b7580ac4778"/></typename>
+              </type-tag>
+            </type-pointer>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="msg" ref="0x2b7580b2f020" loc="4:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+            <type-pointer size="I:2" alignment="I:1">
+              <type-tag size="I:28" alignment="I:1"><nx_struct-ref name="pack" ref="0x2b7580ac5358"/>
+                <typename><typedef-ref name="pack" ref="0x2b7580ac4778"/></typename>
+              </type-tag>
+            </type-pointer>
+          </variable>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="printLinkState" ref="0x2b7580b3d470" loc="11:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="printNeighbors" ref="0x2b7580b2e6c8" loc="9:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="printDistanceVector" ref="0x2b7580b3db48" loc="12:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="setTestClient" ref="0x2b7580b3c8f8" loc="14:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="setTestServer" ref="0x2b7580b3c258" loc="13:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="setAppServer" ref="0x2b7580b3a020" loc="15:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="printRouteTable" ref="0x2b7580b2ed78" loc="10:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="ping" ref="0x2b7580b2e020" loc="8:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+            </type-int>
+            <type-pointer size="I:2" alignment="I:1">
+              <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+                <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+              </type-int>
+            </type-pointer>
+          </function-parameters>
+        </type-function>
+        <parameters>
+          <variable name="destination" ref="0x2b7580b2f918" loc="8:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+            <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+              <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+            </type-int>
+          </variable>
+          <variable name="payload" ref="0x2b7580b2fc88" loc="8:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+            <type-pointer size="I:2" alignment="I:1">
+              <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+                <typename><typedef-ref name="uint8_t" ref="0x2b75800dd160"/></typename>
+              </type-int>
+            </type-pointer>
+          </variable>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="setAppClient" ref="0x2b7580b3a6b8" loc="16:/home/luis/workspace/Project0/src/lib/interfaces/CommandHandler.nc">
+        <interfacedef-ref qname="CommandHandler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="TaskBasic" loc="55:/home/luis/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc">
+      <function command="" provided="0" name="postTask" ref="0x2b75809cd608" loc="67:/home/luis/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc">
+        <documentation loc="57:/home/luis/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc">
+          <short>&#10; Post this task to the TinyOS scheduler.</short>
+          <long>&#10; Post this task to the TinyOS scheduler. At some later time,&#10; depending on the scheduling policy, the scheduler will signal the&#10; &#60;tt>run()&#60;/tt> event. &#10;&#10; @return SUCCESS if task was successfuly&#10; posted; the semantics of a non-SUCCESS return value depend on the&#10; implementation of this interface (the class of task).&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="TaskBasic"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="error_t" ref="0x2b75809d01a8"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function event="" provided="0" name="runTask" ref="0x2b75809cddf8" loc="75:/home/luis/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc">
+        <documentation loc="69:/home/luis/local/tinyos-2.1.1/tos/interfaces/TaskBasic.nc">
+          <short>&#10; Event from the scheduler to run this task.</short>
+          <long>&#10; Event from the scheduler to run this task. Following the TinyOS&#10; concurrency model, the codes invoked from &#60;tt>run()&#60;/tt> signals&#10; execute atomically with respect to one another, but can be&#10; preempted by async commands/events.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="TaskBasic"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="Scheduler" loc="52:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+      <documentation loc="42:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+        <short> &#10; The interface to a TinyOS task scheduler.</short>
+        <long> &#10; The interface to a TinyOS task scheduler.&#10;&#10; @author Philip Levis&#10; @date   January 19 2005&#10; @see TEP 106: Tasks and Schedulers&#10; @see TEP 107: Boot Sequence&#10;</long>
+      </documentation>
+      <function command="" provided="0" name="init" ref="0x2b75809bf978" loc="57:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+        <documentation loc="54:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+          <short> &#10; Initialize the scheduler.</short>
+          <long> &#10; Initialize the scheduler.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Scheduler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="taskLoop" ref="0x2b75809cb878" loc="72:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+        <documentation loc="67:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+          <short>&#10; Enter an infinite task-running loop.</short>
+          <long>&#10; Enter an infinite task-running loop. Put the MCU into a low power&#10; state when the processor is idle (task queue empty, waiting for&#10; interrupts). This call never returns.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Scheduler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+      <function command="" provided="0" name="runNextTask" ref="0x2b75809cb0d8" loc="65:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+        <documentation loc="59:/home/luis/local/tinyos-2.1.1/tos/interfaces/Scheduler.nc">
+          <short> &#10; Run the next task if one is waiting, otherwise return immediately.</short>
+          <long> &#10; Run the next task if one is waiting, otherwise return immediately. &#10;&#10; @return        whether a task was run -- TRUE indicates a task&#10;                ran, FALSE indicates there was no task to run.&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="Scheduler"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="bool" ref="0x2b75809bd9b8"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="McuSleep" loc="74:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuSleep.nc">
+      <documentation loc="63:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuSleep.nc">
+        <short>&#10; Interface to instruct the MCU to enter a low power state.</short>
+        <long>&#10; Interface to instruct the MCU to enter a low power state. TEP112&#10; describes how an MCU computes this state and how the Scheduler uses&#10; this interface to manage system power draw.&#10; &#10; @author Philip Levis&#10; @author Martin Turon &#60;mturon@xbow.com>&#10; @date   Oct 26, 2005&#10;&#10;</long>
+      </documentation>
+      <function command="" provided="0" name="sleep" ref="0x2b7580a85cb0" loc="76:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuSleep.nc">
+        <documentation loc="75:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuSleep.nc">
+          <short> Called by the scheduler to put the MCU to sleep.</short>
+          <long> Called by the scheduler to put the MCU to sleep. *</long>
+        </documentation>
+        <interfacedef-ref qname="McuSleep"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="McuPowerOverride" loc="50:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuPowerOverride.nc">
+      <documentation loc="1:/home/luis/local/tinyos-2.1.1/tos/platforms/micaz/hardware.h">
+        <short>                                                                     &#10;  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.</short>
+        <long>                                                                     &#10;  IMPORTANT: READ BEFORE DOWNLOADING, COPYING, INSTALLING OR USING.  By&#10;  downloading, copying, installing or using the software you agree to&#10;  this license.  If you do not agree to this license, do not download,&#10;  install, copy or use the software.&#10;&#10;  Copyright (c) 2004-2005 Crossbow Technology, Inc.&#10;  Copyright (c) 2002-2003 Intel Corporation.&#10;  Copyright (c) 2000-2003 The Regents of the University  of California.    &#10;  All rights reserved.&#10;&#10; Redistribution and use in source and binary forms, with or without&#10; modification, are permitted provided that the following conditions&#10; are met:&#10;&#10; - Redistributions of source code must retain the above copyright&#10;   notice, this list of conditions and the following disclaimer.&#10; - Redistributions in binary form must reproduce the above copyright&#10;   notice, this list of conditions and the following disclaimer in the&#10;   documentation and/or other materials provided with the&#10;   distribution.&#10; - Neither the name of the copyright holder nor the names of&#10;   its contributors may be used to endorse or promote products derived&#10;   from this software without specific prior written permission.&#10;&#10; THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&#10; &#34;AS IS&#34; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT&#10; LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS&#10; FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL&#10; THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT,&#10; INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES&#10; (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR&#10; SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)&#10; HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,&#10; STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)&#10; ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED&#10; OF THE POSSIBILITY OF SUCH DAMAGE.&#10;&#10;  @author Jason Hill, Philip Levis, Nelson Lee, David Gay&#10;  @author Alan Broad &#60;abroad@xbow.com>&#10;  @author Matt Miller &#60;mmiller@xbow.com>&#10;  @author Martin Turon &#60;mturon@xbow.com>&#10;&#10;  $Id: hardware.h,v 1.8 2010-06-29 22:07:54 scipio Exp $&#10;</long>
+      </documentation>
+      <function command="" provided="0" name="lowestState" ref="0x2b7580aa8360" loc="62:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuPowerOverride.nc">
+        <documentation loc="52:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuPowerOverride.nc">
+          <short>&#10; Called when computing the low power state, in order to allow&#10; a high-level component to institute a lower bound.</short>
+          <long>&#10; Called when computing the low power state, in order to allow&#10; a high-level component to institute a lower bound. Because&#10; this command originates deep within the basic TinyOS scheduling&#10; mechanisms, it should be used very sparingly. Refer to TEP 112 for&#10; details.&#10;&#10; @return    the lowest power state the system can enter to meet the &#10;            requirements of this component&#10;</long>
+        </documentation>
+        <interfacedef-ref qname="McuPowerOverride"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-int cname="unsigned char" unsigned="" size="I:1" alignment="I:1">
+            <typename><typedef-ref name="mcu_power_t" ref="0x2b7580a2a940"/></typename>
+          </type-int>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+    <interfacedef qname="McuPowerState" loc="46:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuPowerState.nc">
+      <documentation loc="35:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuPowerState.nc">
+        <short>&#10; Interface to instruct TinyOS that the low-power state of the MCU&#10; may have changed.</short>
+        <long>&#10; Interface to instruct TinyOS that the low-power state of the MCU&#10; may have changed. TEP 112 describes how an MCU computes this state&#10; and how the Scheduler uses this interface to manage system power&#10; draw.&#10; &#10; @author Philip Levis&#10; @date   Oct 26, 2005&#10; @see    TEP 112: Microcontroller Power Management&#10;</long>
+      </documentation>
+      <function command="" provided="0" name="update" ref="0x2b7580a9ee68" loc="52:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuPowerState.nc">
+        <documentation loc="47:/home/luis/local/tinyos-2.1.1/tos/interfaces/McuPowerState.nc">
+          <short> &#10; Called by any component to tell TinyOS that the MCU low&#10; power state may have changed.</short>
+          <long> &#10; Called by any component to tell TinyOS that the MCU low&#10; power state may have changed. Generally, this should be&#10; called whenever a peripheral/timer is started/stopped. &#10;</long>
+        </documentation>
+        <interfacedef-ref qname="McuPowerState"/>
+        <type-function size="I:1" alignment="I:1">
+          <type-void size="I:1" alignment="I:1"></type-void>
+          <function-parameters>
+          </function-parameters>
+        </type-function>
+        <parameters>
+        </parameters>
+      </function>
+    </interfacedef>
+  </interfacedefs>
+  <tags>
+  </tags>
+  <variables>
+  </variables>
+  <constants>
+  </constants>
+  <functions>
+  </functions>
+  <typedefs>
+  </typedefs>
+</nesc>
